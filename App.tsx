@@ -1,107 +1,106 @@
+import React, {useState} from 'react';
 import {
   View,
-  Text,
-  Image,
   TextInput,
-  ScrollView,
+  Button,
+  ActivityIndicator,
   StyleSheet,
+  Text, // Import Text
+  Alert, // Import Alert
 } from 'react-native';
-import React from 'react';
 
-const App: React.FC = () => {
+const LoadingForm = () => {
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    username: 'Masukan username',
+    password: 'Masukan password',
+  });
+  const [isLoginForm, setIsLoginForm] = useState(true);
+
+  const handleInputChange = (key: string, value: string) => {
+    setFormData({
+      ...formData,
+      [key]: value,
+    });
+  };
+
+  const handleSubmit = () => {
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+      // Menggunakan Alert untuk menampilkan pesan
+      Alert.alert('Success', 'Data submitted successfully!');
+    }, 2000);
+  };
+
+  const switchForm = () => {
+    setIsLoginForm(!isLoginForm);
+  };
+
   return (
-    <ScrollView style={styles.container}>
-      <ScrollView style={styles.innerContainer} nestedScrollEnabled={true}>
-        <View style={styles.box}>
-          <Text style={[styles.text, styles.textCenter]}>
-            Hello, React Native!
-          </Text>
-          <Image
-            source={{
-              uri: 'https://i.pinimg.com/564x/aa/b1/3f/aab13ff8c9cae7d409809e09a05702be.jpg',
-            }}
-            style={[styles.image, styles.marginBottom]}
-          />
-          <TextInput
-            placeholder="Type here..."
-            placeholderTextColor="gray" // Set placeholder text color
-            style={[styles.input, styles.marginBottom]}
-          />
-
-          <Image
-            source={{
-              uri: 'https://i.pinimg.com/474x/ce/e0/73/cee073e57ec1f392c0ae2373e7f15ad2.jpg',
-            }}
-            style={[styles.image, styles.marginBottom]}
-          />
-          <TextInput
-            placeholder="Type here..."
-            placeholderTextColor="gray" // Set placeholder text color
-            style={[styles.input, styles.marginBottom]}
-          />
-
-          <Image
-            source={{
-              uri: 'https://i.pinimg.com/474x/6b/5b/f0/6b5bf011b5a5bfdeab4d0e51743d5e37.jpg',
-            }}
-            style={[styles.image, styles.marginBottom]}
-          />
-          <TextInput
-            placeholder="Type here..."
-            placeholderTextColor="gray" // Set placeholder text color
-            style={[styles.input, styles.marginBottom]}
-          />
-
-          {/* Add more Image and TextInput components as needed */}
-        </View>
-      </ScrollView>
-    </ScrollView>
+    <View style={styles.container}>
+      <Text style={styles.text}>Welcome</Text>
+      <Text style={styles.textuser}>Username</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Username"
+        value={formData.username}
+        onChangeText={text => handleInputChange('username', text)}
+      />
+      <Text style={styles.textuser}>Password</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        secureTextEntry
+        value={formData.password}
+        onChangeText={text => handleInputChange('password', text)}
+      />
+      <Button
+        title={isLoginForm ? 'Login' : 'Register'}
+        onPress={handleSubmit}
+        disabled={loading}
+      />
+      {loading && <ActivityIndicator size="large" color="#0000ff" />}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    backgroundColor: 'lightgray',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    backgroundColor: 'rgba(255, 0, 25, 0.5)',
   },
-  innerContainer: {
-    marginBottom: 20,
-  },
-  box: {
-    marginBottom: 20,
-    backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 8,
+  input: {
     borderWidth: 1,
-    borderColor: 'blue',
+    borderColor: '#FFFFFF',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 40,
+    width: '100%',
   },
   text: {
-    fontSize: 20,
+    fontSize: 50, // Ukuran teks diperbesar
     fontWeight: 'bold',
-    color: 'rgba(255, 0, 0, 1)',
+    color: 'rgba(255, 255, 255, 1)',
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10,
+    textAlign: 'left', // Teks akan diatur ke kiri
+    alignSelf: 'flex-start', // Teks akan diatur ke kiri
+    marginBottom: 50, // Menambahkan ruang bawah
   },
-  textCenter: {
-    textAlign: 'center',
-  },
-  image: {
-    width: 200,
-    height: 250,
-    resizeMode: 'cover',
-  },
-  input: {
-    height: 40,
-    borderColor: 'blue',
-    borderWidth: 1,
-    color: 'white',
-    paddingLeft: 8, // Add padding left to prevent overlap with placeholder
-  },
-  marginBottom: {
-    marginBottom: 15, // Adjust as needed
+  textuser: {
+    fontSize: 20, // Ukuran teks diperbesar
+    fontWeight: 'bold',
+    color: 'rgba(255, 255, 255, 1)',
+    textAlign: 'left', // Teks akan diatur ke kiri
+    alignSelf: 'flex-start', // Teks akan diatur ke kiri
+    marginBottom: 10, // Menambahkan ruang bawah
   },
 });
 
-export default App;
+export default LoadingForm;
